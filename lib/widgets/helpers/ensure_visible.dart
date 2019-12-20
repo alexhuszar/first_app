@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
@@ -28,8 +29,7 @@ class EnsureVisibleWhenFocused extends StatefulWidget {
   /// Defaults to 100 milliseconds.
   final Duration duration;
 
-  EnsureVisibleWhenFocusedState createState() =>
-      new EnsureVisibleWhenFocusedState();
+  EnsureVisibleWhenFocusedState createState() => new EnsureVisibleWhenFocusedState();
 }
 
 class EnsureVisibleWhenFocusedState extends State<EnsureVisibleWhenFocused> {
@@ -47,11 +47,13 @@ class EnsureVisibleWhenFocusedState extends State<EnsureVisibleWhenFocused> {
 
   Future<Null> _ensureVisible() async {
     // Wait for the keyboard to come into view
+    // TODO: position doesn't seem to notify listeners when metrics change,
     // perhaps a NotificationListener around the scrollable could avoid
     // the need insert a delay here.
     await Future.delayed(const Duration(milliseconds: 300));
 
-    if (!widget.focusNode.hasFocus) return;
+    if (!widget.focusNode.hasFocus)
+      return;
 
     final RenderObject object = context.findRenderObject();
     final RenderAbstractViewport viewport = RenderAbstractViewport.of(object);
@@ -62,11 +64,10 @@ class EnsureVisibleWhenFocusedState extends State<EnsureVisibleWhenFocused> {
 
     ScrollPosition position = scrollableState.position;
     double alignment;
-    if (position.pixels > viewport.getOffsetToReveal(object, 0.0).offset) {
+    if (position.pixels > viewport.getOffsetToReveal(object, 0.0)) {
       // Move down to the top of the viewport
       alignment = 0.0;
-    } else if (position.pixels <
-        viewport.getOffsetToReveal(object, 1.0).offset) {
+    } else if (position.pixels < viewport.getOffsetToReveal(object, 1.0)) {
       // Move up to the bottom of the viewport
       alignment = 1.0;
     } else {

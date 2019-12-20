@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:scoped_model/scoped_model.dart';
 
+import '../widgets/products/products.dart';
 import '../scoped-models/main.dart';
-
-import '../widgets/products/Products.dart';
 
 class ProductsPage extends StatefulWidget {
   final MainModel model;
@@ -29,11 +29,11 @@ class _ProductsPageState extends State<ProductsPage> {
         children: <Widget>[
           AppBar(
             automaticallyImplyLeading: false,
-            title: Text('Choice'),
+            title: Text('Choose'),
           ),
           ListTile(
             leading: Icon(Icons.edit),
-            title: Text('Manage products'),
+            title: Text('Manage Products'),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/admin');
             },
@@ -43,17 +43,16 @@ class _ProductsPageState extends State<ProductsPage> {
     );
   }
 
-  Widget _buildProductList() {
+  Widget _buildProductsList() {
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, MainModel model) {
-        Widget content = Products();
-        if (model.isLoading) {
+        Widget content = Center(child: Text('No Products Found!'));
+        if (model.displayedProducts.length > 0 && !model.isLoading) {
+          content = Products();
+        } else if (model.isLoading) {
           content = Center(child: CircularProgressIndicator());
         }
-        return RefreshIndicator(
-          onRefresh: model.fetchProducts,
-          child: content,
-        );
+        return RefreshIndicator(onRefresh: model.fetchProducts, child: content,) ;
       },
     );
   }
@@ -71,7 +70,6 @@ class _ProductsPageState extends State<ProductsPage> {
                 icon: Icon(model.displayFavoritesOnly
                     ? Icons.favorite
                     : Icons.favorite_border),
-                color: Colors.white.withAlpha(200),
                 onPressed: () {
                   model.toggleDisplayMode();
                 },
@@ -80,7 +78,7 @@ class _ProductsPageState extends State<ProductsPage> {
           )
         ],
       ),
-      body: _buildProductList(),
+      body: _buildProductsList(),
     );
   }
 }

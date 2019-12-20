@@ -10,14 +10,13 @@ class Product {
   final String userEmail;
   final String userId;
 
-  Product({
-    @required this.id,
-    @required this.title,
-    @required this.description,
-    @required this.price,
-    @required this.image,
-    this.userEmail,
-    this.userId,
-    this.isFavorite = false,
-  });
+  Product(
+      {@required this.id,
+      @required this.title,
+      @required this.description,
+      @required this.price,
+      @required this.image,
+      @required this.userEmail,
+      @required this.userId,
+      this.isFavorite = false});
 }

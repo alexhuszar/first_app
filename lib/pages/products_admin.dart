@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './ProductEdit.dart';
-import './ProductList.dart';
+import './product_edit.dart';
+import './product_list.dart';
 import '../scoped-models/main.dart';
 
 class ProductsAdminPage extends StatelessWidget {
@@ -15,7 +15,7 @@ class ProductsAdminPage extends StatelessWidget {
         children: <Widget>[
           AppBar(
             automaticallyImplyLeading: false,
-            title: Text('Choice'),
+            title: Text('Choose'),
           ),
           ListTile(
             leading: Icon(Icons.shop),
@@ -37,16 +37,21 @@ class ProductsAdminPage extends StatelessWidget {
         drawer: _buildSideDrawer(context),
         appBar: AppBar(
           title: Text('Manage Products'),
-          bottom: TabBar(tabs: <Widget>[
-            Tab(icon: Icon(Icons.create), text: 'Create product'),
-            Tab(icon: Icon(Icons.list), text: 'My product')
-          ]),
+          bottom: TabBar(
+            tabs: <Widget>[
+              Tab(
+                icon: Icon(Icons.create),
+                text: 'Create Product',
+              ),
+              Tab(
+                icon: Icon(Icons.list),
+                text: 'My Products',
+              ),
+            ],
+          ),
         ),
         body: TabBarView(
-          children: <Widget>[
-            ProductEdit(),
-            ProductList(model),
-          ],
+          children: <Widget>[ProductEditPage(), ProductListPage(model)],
         ),
       ),
     );
